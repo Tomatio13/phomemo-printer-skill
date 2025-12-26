@@ -1,0 +1,42 @@
+{
+  "canvas": {
+    "font_path": "/usr/local/share/fonts/HackGen_NF/HackGen35ConsoleNFJ-Regular.ttf",
+    "fallback_fonts": ["/usr/local/share/fonts/NotoEmoji-Regular.ttf"],
+    "background_color": "#FFFFFF",
+    "margin": 20,
+    "line_spacing": 1.2,
+    "wrap_style": "character"
+  },
+  "layers": [
+    {
+      "type": "text",
+      "text": "サンプルレイアウト",
+      "font_size": 36,
+      "position": { "x": 40, "y": 40 },
+      "width": 496,
+      "stroke": { "width": 2, "color": "#FFFFFF" }
+    },
+    {
+      "type": "image",
+      "path": "./red-white-airplane-ticket-design-realistic-illustration-airplane-passenger-boarding-pass_896322-690.avif",
+      "position": { "x": 360, "y": 20 },
+      "max_width": 160,
+      "opacity": 0.9
+    },
+    {
+      "type": "text",
+      "text_file": "./message.txt",
+      "font_size": 28,
+      "line_spacing": 1.4,
+      "position": { "x": 40, "y": 200 },
+      "width": 496
+    }
+  ],
+  "output": {
+    "path": "./composed.png",
+    "send_to_printer": false,
+    "threshold": 170,
+    "slice_height": 1400,
+    "chunk_rows": 200
+  }
+}

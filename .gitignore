@@ -1,0 +1,19 @@
+.env
+
+.kiro/
+.serena/
+.venv/
+.pytest_cache/
+.DS_Store
+*.pyc
+
+.env
+
+# generated outputs / artifacts
+artifacts/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.avif
