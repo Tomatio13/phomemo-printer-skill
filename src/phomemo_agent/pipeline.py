@@ -76,14 +76,20 @@ class LayoutJobPipeline:
         slice_heights: Optional[list[int]] = None
 
         # Printer config from env (if not explicitly provided)
+        printer_address_source = "argument" if printer_address else "env"
         if printer_address is None:
             printer_address = os.getenv("PHOMEMO_PRINTER_ADDRESS")
+            if not printer_address:
+                printer_address_source = "missing"
+
+        printer_channel_source = "argument"
         if (not printer_channel) or printer_channel == 1:
             # allow overriding default(1) by env var
             env_channel = os.getenv("PHOMEMO_PRINTER_CHANNEL")
             if env_channel:
                 try:
                     printer_channel = int(env_channel)
+                    printer_channel_source = "env"
                 except ValueError:
                     pass
 
@@ -99,6 +105,14 @@ class LayoutJobPipeline:
             finally:
                 printer.close()
 
+        reason_not_printed: str | None = None
+        if not send_to_printer:
+            # printed=false の典型原因を一言で返す（LLMが環境変数確認などを過剰に聞かないため）
+            if dry_run:
+                reason_not_printed = "dry_run=true (preview only)"
+            else:
+                reason_not_printed = "output.send_to_printer=false"
+
         return LayoutJobResult(
             preview_path=preview_path,
             printed=bool(send_to_printer),
@@ -110,6 +124,16 @@ class LayoutJobPipeline:
                 "rotate": rotate_mode,
                 "width": bw_image.width,
                 "height": bw_image.height,
+                "dry_run": bool(dry_run),
+                "send_to_printer": bool(send_to_printer),
+                "printer": {
+                    # セキュリティ/ログ配慮でMACアドレス本体は返さない（存在有無と取得元のみ）
+                    "address_present": bool(printer_address),
+                    "address_source": printer_address_source,
+                    "channel": int(printer_channel),
+                    "channel_source": printer_channel_source,
+                },
+                "reason_not_printed": reason_not_printed,
             },
         )
 

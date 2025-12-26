@@ -73,7 +73,7 @@ Phomemo M02 Pro 向けに、Strands Agents 等のLLMが **レイアウトJSONを
 
 ### 10.1 MCPサーバーでの統合
 - Strands公式のMCPツール仕様（[参照](https://strandsagents.com/latest/documentation/docs/user-guide/concepts/tools/mcp-tools/index.md)）に倣い、`phomemo_agent.mcp.layout_server` で `FastMCP` サーバーを提供
-- Tool: `render_layout_job(layout, printer_address?, channel?, dry_run?, encoding?)`
+- Tool: `render_layout_job(layout, dry_run?, encoding?)`（プリンタ設定は環境変数を参照）
   - `layout` を `LayoutJobValidator` で検証後、`LayoutJobPipeline` に渡しプレビュー/印刷
   - 戻り値は `preview_path`, `printed`, `slice_heights`, `info`
 - 起動: `python -m phomemo_agent.cli.run_mcp_server --transport sse --port 8787`

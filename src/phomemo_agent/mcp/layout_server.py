@@ -75,12 +75,8 @@ def _printer_spec_markdown() -> str:
 """
 
 
-def build_server(host: str, port: int) -> FastMCP:
-    server = FastMCP(
-        "PhomemoLayoutServer",
-        host=host,
-        port=port,
-    )
+def build_server(host: str = "127.0.0.1", port: int = 8000) -> FastMCP:
+    server = FastMCP("PhomemoLayoutServer", host=host, port=port)
 
     # -------------------------
     # Resources (LLMに仕様を渡す)
@@ -190,21 +186,18 @@ def build_server(host: str, port: int) -> FastMCP:
 
     @server.tool(
         name="render_layout_job",
-        description="Phomemo向けレイアウトJSONを検証し、プレビュー/印刷を実行します。",
+        description=(
+            "Phomemo向けレイアウトJSONを検証し、プレビュー/印刷を実行します。"
+            "プリンタ設定は環境変数 PHOMEMO_PRINTER_ADDRESS / PHOMEMO_PRINTER_CHANNEL を参照します。"
+            "注意: dry_run=true（既定）の場合はプレビューのみで printed=false になります。印刷したい場合は dry_run=false を指定してください。"
+        ),
     )
     def render_layout_job(
         layout: Dict[str, Any],
-        printer_address: Optional[str] = None,
-        channel: Optional[int] = None,
         dry_run: bool = True,
         encoding: str = "utf-8",
     ) -> Dict[str, Any]:
         validator.validate(layout)
-        if printer_address is None:
-            printer_address = os.getenv("PHOMEMO_PRINTER_ADDRESS")
-        if channel is None:
-            env_channel = os.getenv("PHOMEMO_PRINTER_CHANNEL")
-            channel = int(env_channel) if env_channel else 1
         with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as tmp:
             tmp_path = Path(tmp.name)
             tmp.write(json.dumps(layout, ensure_ascii=False).encode("utf-8"))
@@ -212,8 +205,9 @@ def build_server(host: str, port: int) -> FastMCP:
         try:
             result = pipeline.run(
                 job_config_path=tmp_path,
-                printer_address=printer_address,
-                printer_channel=int(channel),
+                # プリンタ設定はパイプライン側で env (PHOMEMO_PRINTER_ADDRESS / PHOMEMO_PRINTER_CHANNEL) を参照する
+                printer_address=None,
+                printer_channel=1,
                 encoding=encoding,
                 dry_run=dry_run,
             )
@@ -236,5 +230,10 @@ def run_server(transport: str, host: str = "127.0.0.1", port: int = 8000) -> Non
         server.run(transport="stdio")
     elif transport == "sse":
         server.run(transport="sse")
+    elif transport in ("http", "streamable-http", "streamable_http"):
+        # mcp FastMCP uses the literal string "streamable-http" for Streamable HTTP transport.
+        # Keep "http" as a user-friendly alias.
+        server.run(transport="streamable-http")
     else:
-        raise ValueError("transport must be 'stdio' or 'sse'")
+        raise ValueError("transport must be 'stdio', 'sse', 'http' (alias), or 'streamable-http'")
+

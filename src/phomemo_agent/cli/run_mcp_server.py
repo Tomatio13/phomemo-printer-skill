@@ -9,12 +9,12 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Phomemo MCPサーバーを起動")
     parser.add_argument(
         "--transport",
-        choices=["sse", "stdio"],
+        choices=["sse", "stdio", "http", "streamable-http"],
         default="sse",
         help="MCPトランスポート種別 (default: sse)",
     )
-    parser.add_argument("--host", default="127.0.0.1", help="SSEホスト (sse時のみ)")
-    parser.add_argument("--port", type=int, default=8000, help="SSEポート (sse時のみ)")
+    parser.add_argument("--host", default="127.0.0.1", help="ホスト (sse/http時のみ)")
+    parser.add_argument("--port", type=int, default=8000, help="ポート (sse/http時のみ)")
     return parser.parse_args()
 
 
