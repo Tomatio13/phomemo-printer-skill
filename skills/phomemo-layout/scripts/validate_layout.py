@@ -5,6 +5,12 @@ import json
 import sys
 from pathlib import Path
 
+SKILL_ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = SKILL_ROOT / "src"
+if SRC_DIR.exists():
+    # Allow running without PYTHONPATH when using the standalone skill folder.
+    sys.path.insert(0, str(SRC_DIR))
+
 from phomemo_agent.validators import LayoutJobValidator
 
 

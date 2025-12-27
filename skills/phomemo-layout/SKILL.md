@@ -31,7 +31,7 @@ Phomemo M02 Pro向けのレイアウトJSONを、仕様とスキーマに沿っ�
 - 依存管理は `requirements.txt` を使用する。
 - 初回セットアップ例: `python3 -m venv .venv` → `source .venv/bin/activate` → `pip install -r requirements.txt`
 - 実行例: `PYTHONPATH=src python scripts/validate_layout.py <layout.json>`
-- スクリプト実行時は `PYTHONPATH=src` を設定する（またはパッケージとしてインストールする）。
+- スクリプト実行時は `PYTHONPATH=src` を設定する（技能フォルダ内に `src/` があれば不要）。
 - `.env` は **このスキルの作業ディレクトリ** に置く（実行時のカレントから探索されるため）。
 - `.env` サンプル:
   - `PHOMEMO_PRINTER_ADDRESS=B5:4B:B4:78:7B:C4`
