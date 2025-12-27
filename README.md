@@ -121,6 +121,10 @@ python -m phomemo_agent.cli.run_mcp_server --transport stdio
 - レイアウトJSON側が `output.send_to_printer=false`
 - `.env`の`PHOMEMO_PRINTER_ADDRESS`未設定、またはBluetooth未接続
 
+## Skills（Codex）
+- `skills/phomemo-layout`: レイアウトJSONの生成・修正・検証・プレビュー/印刷のワークフローを扱う。必要な手順や参照ファイルは `skills/phomemo-layout/SKILL.md` を参照。
+- スクリプト実行時は `PYTHONPATH=src` を設定する。
+
 ## リポジトリ構成
 - `src/phomemo_agent/`: 実装本体
   - `composer.py` / `printer.py` / `pipeline.py` / `validators.py`
