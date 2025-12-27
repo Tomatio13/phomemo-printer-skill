@@ -18,10 +18,10 @@
     }
   ],
   "output": {
-    "path": "./composed.png",
+    "path": "./outputs/composed.png",
     "send_to_printer": false,
     "threshold": 170,
     "slice_height": 1400,
-    "chunk_rows": 200
+    "chunk_rows": 64
   }
 }

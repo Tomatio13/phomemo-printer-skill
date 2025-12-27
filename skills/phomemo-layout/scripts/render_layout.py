@@ -46,7 +46,19 @@ def main() -> int:
             dry_run=dry_run,
         )
     except Exception as exc:
-        print(f"error: render failed: {exc}", file=sys.stderr)
+        error_message = f"render failed: {exc}"
+        print(f"error: {error_message}", file=sys.stderr)
+        print(
+            json.dumps(
+                {
+                    "preview_path": "",
+                    "printed": False,
+                    "slice_heights": None,
+                    "info": {"error": error_message},
+                },
+                ensure_ascii=False,
+            )
+        )
         return 1
 
     payload = {

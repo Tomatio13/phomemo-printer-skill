@@ -16,7 +16,14 @@ sudo apt update
 sudo apt install -y bluez libbluetooth-dev python3-venv python3-full
 ```
 
-### Python環境
+> 補足: venv推奨、uv非推奨
+> OS環境にも依存しそうですが、Bluetoothを使うのに、BlueZが必要です。
+> bluezを入れた後に、pythonをインストールするとコンパイルされて、
+> bluetooth用のヘッダ周りが参照できるようになるようです。
+> uvでやると、コンパイル済みのpythonを使用されるためか、
+> bluetooth用のヘッダ周りが参照できないようでエラーが発生します。
+
+### Python環境（venv）
 ```bash
 cd /path/to/phomemo
 python3 -m venv .venv

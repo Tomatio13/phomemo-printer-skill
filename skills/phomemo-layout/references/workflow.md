@@ -8,6 +8,7 @@
 - 出力はJSONのみ
 - `canvas` / `layers` / `output` を必ず含める
 - `canvas.font_path` は存在するパスのみ
+- JSON はこのスキルの `outputs/` 配下に置く（実行環境に合わせてパスは解釈される）
 
 ## 3) 検証する
 - `PYTHONPATH=src scripts/validate_layout.py <path/to/layout.json>`
@@ -15,7 +16,7 @@
 
 ## 4) プレビューする
 - `PYTHONPATH=src scripts/render_layout.py <path/to/layout.json> --dry-run`
-- `preview_path` を確認する
+- `preview_path` を確認する（基本はこのスキルの `outputs/` 配下に保存する）
 
 ## 5) 印刷する
 - `PYTHONPATH=src scripts/render_layout.py <path/to/layout.json> --print`

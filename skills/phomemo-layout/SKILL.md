@@ -16,10 +16,11 @@ Phomemo M02 Pro向けのレイアウトJSONを、仕様とスキーマに沿っ�
 
 ## 手順
 1) `references/printer-spec.md` と `references/layout_job.schema.json` を読む。
-2) `references/layout.sample.json` を参考に、JSONのみを出力する。
-3) `scripts/validate_layout.py` で検証する。
-4) `scripts/render_layout.py --dry-run` でプレビューする。
-5) 印刷が必要なら `scripts/render_layout.py --print` を使う。
+2) `references/layout.sample.json` を参考に、JSONのみを出力する（このスキルの `outputs/` 配下に置く）。
+3) 依存を準備する（venv + pip）。
+4) `scripts/validate_layout.py` で検証する。
+5) `scripts/render_layout.py --dry-run` でプレビューする。
+6) 印刷が必要なら `scripts/render_layout.py --print` を使う。
 
 ## 使い分けの目安
 - 天気: 日付/天候/気温/降水確率の見やすさを優先し、余白と行間を広めにする。
@@ -27,7 +28,16 @@ Phomemo M02 Pro向けのレイアウトJSONを、仕様とスキーマに沿っ�
 - 定規: 物理長の精度を優先し、Y方向に必要pxを確保する。
 
 ## 注意
+- 依存管理は `requirements.txt` を使用する。
+- 初回セットアップ例: `python3 -m venv .venv` → `source .venv/bin/activate` → `pip install -r requirements.txt`
+- 実行例: `PYTHONPATH=src python scripts/validate_layout.py <layout.json>`
 - スクリプト実行時は `PYTHONPATH=src` を設定する（またはパッケージとしてインストールする）。
+- `.env` は **このスキルの作業ディレクトリ** に置く（実行時のカレントから探索されるため）。
+- `.env` サンプル:
+  - `PHOMEMO_PRINTER_ADDRESS=B5:4B:B4:78:7B:C4`
+  - `PHOMEMO_PRINTER_CHANNEL=1`
+- JSON/PNG の出力先は、このスキルの `outputs/` 配下に統一する（実行環境に合わせてパスは解釈される）。
+- 印刷失敗時は `render_layout.py` が非ゼロ終了し、`stderr` にエラーを出力しつつ、`info.error` を含むJSONを標準出力へ返す。
 - 出力はJSONのみ。説明文やコードブロックは入れない。
 - 576px固定幅。長尺はY方向で確保する。
 - `output.send_to_printer` と `--print` の両方を満たさないと印刷されない。
