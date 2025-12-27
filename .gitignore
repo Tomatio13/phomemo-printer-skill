@@ -17,3 +17,5 @@ artifacts/
 *.gif
 *.webp
 *.avif
+
+outputs/
